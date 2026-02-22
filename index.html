@@ -137,26 +137,37 @@
 
       /* Gallery */
       .gallery-sec { background: var(--offwhite); }
-      .gallery-grid { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-      @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
-      .gallery-item { aspect-ratio: 4/5; border-radius: 1rem; overflow: hidden; background: rgba(58, 42, 31, 0.05); cursor: pointer; }
-      @media (min-width: 768px) { .gallery-item { aspect-ratio: 1; } }
-      .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-      .gallery-item:hover img { transform: scale(1.05); }
+  .gallery-grid { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  @media (min-width: 480px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
+  .gallery-item { position: relative; aspect-ratio: 4/5; border-radius: 1rem; overflow: hidden; background: rgba(58, 42, 31, 0.05); cursor: pointer; display: block; }
+  @media (min-width: 768px) { .gallery-item { aspect-ratio: 1; } }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s cubic-bezier(.2,.9,.3,1); display: block; }
+  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-item .overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 0.75rem 1rem; background: linear-gradient(180deg, rgba(58,42,31,0) 0%, rgba(58,42,31,0.35) 60%, rgba(58,42,31,0.55) 100%); color: var(--offwhite); transform: translateY(12%); opacity: 0; transition: transform 0.28s, opacity 0.28s; display:flex; align-items:center; justify-content:space-between; gap:0.5rem; }
+  .gallery-item:hover .overlay, .gallery-item:focus .overlay { transform: translateY(0); opacity: 1; }
+  .gallery-item .caption { font-size: 0.9rem; font-weight: 600; color: #fff; }
+  .gallery-item .caption-sub { font-size: 0.75rem; color: rgba(255,255,255,0.9); font-weight:500; }
       .lightbox {
         display: none;
         position: fixed;
         inset: 0;
         z-index: 100;
-        background: rgba(58, 42, 31, 0.8);
+        background: rgba(58, 42, 31, 0.86);
         align-items: center;
         justify-content: center;
         padding: 1rem;
       }
       .lightbox.open { display: flex; }
+      .lightbox-inner { position: relative; max-width: 1100px; width: 100%; display:flex; align-items:center; justify-content:center; }
       .lightbox img { max-width: 100%; max-height: 85vh; width: auto; height: auto; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
-      .lightbox-close { position: absolute; top: 1rem; right: 1rem; padding: 0.5rem 1rem; border-radius: 1rem; background: rgba(255,255,255,0.9); color: var(--espresso); border: none; cursor: pointer; font-weight: 500; }
+      .lightbox-close { position: absolute; top: 1rem; right: 1rem; padding: 0.5rem 1rem; border-radius: 1rem; background: rgba(255,255,255,0.95); color: var(--espresso); border: none; cursor: pointer; font-weight: 500; }
       .lightbox-close:hover { background: #fff; }
+      .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border-radius: 999px; width: 44px; height: 44px; display:flex; align-items:center; justify-content:center; border: none; cursor:pointer; }
+      .lightbox-prev { left: -56px; }
+      .lightbox-next { right: -56px; }
+      .lightbox-nav svg { width: 18px; height: 18px; color: var(--espresso); }
+      @media (max-width: 600px) { .lightbox-prev { left: 8px; } .lightbox-next { right: 8px; } }
 
       /* Info + Hours */
       .info-sec { background: #fff; }
@@ -275,24 +286,56 @@
           <p class="section-sub">Einblicke in unser Café und unsere Küche.</p>
           <div class="gallery-grid">
             <button type="button" class="gallery-item focus-ring" data-lightbox="0" aria-label="Bild öffnen: Frühstückstisch">
-              <img src="images/essen.png" alt="Frühstückstisch mit Platten und Bowls" />
+              <img loading="lazy" src="images/essen.png" alt="Frühstückstisch mit Platten und Bowls" />
+              <div class="overlay">
+                <div>
+                  <div class="caption">Frühstückstisch</div>
+                  <div class="caption-sub">Platten & Bowls</div>
+                </div>
+              </div>
             </button>
             <button type="button" class="gallery-item focus-ring" data-lightbox="1" aria-label="Bild öffnen: Storefront">
-              <img src="images/outside.png" alt="Café Yamu Storefront in Köln-Nippes" />
+              <img loading="lazy" src="images/outside.png" alt="Café Yamu Storefront in Köln-Nippes" />
+              <div class="overlay">
+                <div>
+                  <div class="caption">Außenansicht</div>
+                  <div class="caption-sub">Wilhelmplatz — Köln-Nippes</div>
+                </div>
+              </div>
             </button>
             <button type="button" class="gallery-item focus-ring" data-lightbox="2" aria-label="Bild öffnen: Logo">
-              <img src="images/logo.jpg" alt="Café Yamu Logo" />
+              <img loading="lazy" src="images/logo.jpg" alt="Café Yamu Logo" />
+              <div class="overlay">
+                <div>
+                  <div class="caption">Unser Logo</div>
+                  <div class="caption-sub">Café Yamu</div>
+                </div>
+              </div>
             </button>
             <button type="button" class="gallery-item focus-ring" data-lightbox="3" aria-label="Bild öffnen: To-Go Becher">
-              <img src="images/cup.png" alt="Café Yamu To-Go Becher" />
+              <img loading="lazy" src="images/cup.png" alt="Café Yamu To-Go Becher" />
+              <div class="overlay">
+                <div>
+                  <div class="caption">To-Go Becher</div>
+                  <div class="caption-sub">Für unterwegs</div>
+                </div>
+              </div>
             </button>
           </div>
         </div>
       </section>
 
       <div class="lightbox focus-ring" id="lightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert anzeigen">
+        <div class="lightbox-inner">
+          <button type="button" class="lightbox-nav lightbox-prev focus-ring" id="lightbox-prev" aria-label="Vorheriges Bild">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <img id="lightbox-img" src="" alt="" />
+          <button type="button" class="lightbox-nav lightbox-next focus-ring" id="lightbox-next" aria-label="Nächstes Bild">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
         <button type="button" class="lightbox-close focus-ring" id="lightbox-close" aria-label="Lightbox schließen">Schließen</button>
-        <img id="lightbox-img" src="" alt="" />
       </div>
 
       <section id="infos" class="info-sec" aria-labelledby="info-heading">
@@ -395,26 +438,53 @@
         var lightbox = document.getElementById('lightbox');
         var lightboxImg = document.getElementById('lightbox-img');
         var lightboxClose = document.getElementById('lightbox-close');
-        var sources = ['images/essen.png', 'images/outside.png', 'images/logo.jpg', 'images/cup.png'];
-        var alts = ['Frühstückstisch mit Platten und Bowls', 'Café Yamu Storefront in Köln-Nippes', 'Café Yamu Logo', 'Café Yamu To-Go Becher'];
+        var lightboxPrev = document.getElementById('lightbox-prev');
+        var lightboxNext = document.getElementById('lightbox-next');
+        var sources = [
+          { src: 'images/essen.png', alt: 'Frühstückstisch mit Platten und Bowls' },
+          { src: 'images/outside.png', alt: 'Café Yamu Storefront in Köln-Nippes' },
+          { src: 'images/logo.jpg', alt: 'Café Yamu Logo' },
+          { src: 'images/cup.png', alt: 'Café Yamu To-Go Becher' }
+        ];
+        var current = 0;
+
+        function openLightbox(i) {
+          current = (i + sources.length) % sources.length;
+          lightboxImg.src = sources[current].src;
+          lightboxImg.alt = sources[current].alt;
+          lightbox.classList.add('open');
+          lightboxClose.focus();
+        }
+
+        function closeLightbox() {
+          lightbox.classList.remove('open');
+          // clear src to release memory on mobile
+          setTimeout(function() { lightboxImg.src = ''; }, 300);
+        }
+
+        function showNext() { openLightbox((current + 1) % sources.length); }
+        function showPrev() { openLightbox((current - 1 + sources.length) % sources.length); }
+
         document.querySelectorAll('[data-lightbox]').forEach(function(btn) {
           btn.addEventListener('click', function() {
             var i = parseInt(btn.getAttribute('data-lightbox'), 10);
-            lightboxImg.src = sources[i];
-            lightboxImg.alt = alts[i];
-            lightbox.classList.add('open');
-            lightboxClose.focus();
+            openLightbox(i);
           });
         });
-        function closeLightbox() {
-          lightbox.classList.remove('open');
-        }
+
         lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', function(e) { e.stopPropagation(); showPrev(); });
+        lightboxNext.addEventListener('click', function(e) { e.stopPropagation(); showNext(); });
+
         lightbox.addEventListener('click', function(e) {
           if (e.target === lightbox) closeLightbox();
         });
+
         document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+          if (!lightbox.classList.contains('open')) return;
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowRight') showNext();
+          if (e.key === 'ArrowLeft') showPrev();
         });
       })();
     </script>
